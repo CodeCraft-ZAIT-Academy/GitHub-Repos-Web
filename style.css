@@ -1,0 +1,62 @@
+/* Základný reset (aby to všade vyzeralo rovnako) */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: #0d1117;  /* Tmavá čierna */
+    color: #c9d1d9;       /* Svetlosivý text */
+    font-family: sans-serif;
+}
+
+/* --- HLAVIČKA --- */
+header {
+    height: 60px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    position: fixed; top: 0; width: 100%; /* Pripnuté hore */
+}
+
+.logo-box { display: flex; align-items: center; gap: 10px; }
+.logo-box img { height: 30px; }
+.status { color: #2ea043; border: 1px solid #2ea043; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
+
+/* --- ROZLOŽENIE (Sidebar vs Main) --- */
+.layout {
+    display: flex;
+    margin-top: 60px; /* Aby obsah nebol pod headerom */
+    height: calc(100vh - 60px); /* Zvyšná výška okna */
+}
+
+aside {
+    width: 250px;
+    background: #0d1117;
+    border-right: 1px solid #30363d;
+    padding: 20px;
+}
+
+main {
+    flex: 1; /* Zaber všetko zvyšné miesto */
+    padding: 20px;
+    overflow-y: auto; /* Scrolluje len stred */
+}
+
+/* --- KARTY (Grid) --- */
+#grid {
+    display: grid;
+    /* Magický riadok: automaticky robí stĺpce */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.card h4 { color: #58a6ff; margin-bottom: 5px; } /* Modrý nadpis */
+.card small { color: #8b949e; display: block; margin-top: 10px; }
