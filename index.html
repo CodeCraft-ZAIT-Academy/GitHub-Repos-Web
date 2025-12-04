@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>GR Dashboard</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,36 +15,75 @@
             <img src="logo.png" alt="Logo">
             <b>GITREPOS</b>
         </div>
+
+        <nav class="nav-menu">
+            <a href="#" class="active"><i class="fa-solid fa-house"></i> Domov</a>
+            <a href="#"><i class="fa-solid fa-circle-info"></i> Info</a>
+            <a href="#"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        </nav>
+
         <div class="status">Live</div>
     </header>
 
     <div class="layout">
         
         <aside>
-            <h3>Filtre</h3>
-            <p style="color: gray; margin-top: 10px;">Zatiaľ nič</p>
+            <h3>Filtrovať jazyk</h3>
+            
+            <ul class="filter-list">
+                <li>
+                    <label>
+                        <input type="checkbox" id="check-all" checked> Všetky
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="lang-check" value="javascript"> JavaScript
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="lang-check" value="python"> Python
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="lang-check" value="java"> Java
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="lang-check" value="c"> C / C++
+                    </label>
+                </li>
+            </ul>
         </aside>
 
         <main>
             <div id="grid">
-                <div class="card">
+                <div class="card" data-jazyk="javascript">
                     <h4>facebook/react</h4>
-                    <p>Toto je ukážkový popis repozitára, aby sme videli dizajn.</p>
+                    <p>Knižnica pre tvorbu UI.</p>
                     <small>JavaScript • ★ 10k</small>
                 </div>
                 
-                 <div class="card">
+                <div class="card" data-jazyk="java">
                     <h4>google/guava</h4>
-                    <p>Ďalšia knižnica od Google pre Javu.</p>
+                    <p>Sada knižníc pre Javu.</p>
                     <small>Java • ★ 5k</small>
+                </div>
+
+                <div class="card" data-jazyk="c">
+                    <h4>torvalds/linux</h4>
+                    <p>Linux kernel.</p>
+                    <small>C • ★ 25k</small>
                 </div>
             </div>
 
-            <footer>
-                © 2025 Môj Projekt | Vytvorené pre školu
-            </footer>
+            <footer>© 2025 Môj Projekt</footer>
         </main>
     </div>
 
+    <script src="script.js"></script>
 </body>
 </html>

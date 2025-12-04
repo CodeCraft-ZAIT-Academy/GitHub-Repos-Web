@@ -17,7 +17,7 @@ header {
     background-color: #161b22;
     border-bottom: 1px solid #30363d;
     
-    /* VYLEPŠENIE: Jemný tieň pod hlavičkou */
+    /* tieň pod hlavičkou */
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
     
     display: flex;
@@ -30,7 +30,7 @@ header {
     position: fixed;
     top: 0px;
     width: 100%;
-    z-index: 100; /* Aby bola hlavička vždy navrchu */
+    z-index: 100; /* hlavička vždy navrchu */
 }
 
 .logo-box {
@@ -45,11 +45,37 @@ header {
     margin-right: 10px;
 }
 
+/* NOVÉ: Štýly pre menu v hlavičke */
+.nav-menu {
+    display: flex;
+    gap: 20px; /* Medzera medzi odkazmi */
+}
+
+.nav-menu a {
+    text-decoration: none; /* Zruší podčiarknutie */
+    color: #c9d1d9;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Medzera medzi ikonou a textom */
+    transition: 0.3s; /* Plynulá zmena farby */
+}
+
+.nav-menu a:hover {
+    color: #58a6ff; /* Modrá farba pri nabehnutí myšou */
+}
+
+/* Odkaz, ktorý je aktívny (napr. Domov) */
+.nav-menu a.active {
+    color: #58a6ff;
+}
+
 .status {
     color: #2ea043;
     border: 1px solid #2ea043;
-    padding: 5px 10px; /* Trochu širšie */
-    border-radius: 20px; /* Okrúhlejšie rohy */
+    padding: 5px 10px;
+    border-radius: 20px;
     font-weight: bold;
     font-size: 12px;
 }
@@ -68,12 +94,38 @@ aside {
     padding: 20px;
 }
 
+/* NOVÉ: Štýl pre nadpis filtra */
+aside h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #8b949e; /* Šedá farba */
+    margin-bottom: 15px;
+}
+
+/* NOVÉ: Štýl pre zoznam checkboxov */
+.filter-list {
+    list-style: none; /* Odstráni bodky zo zoznamu */
+}
+
+.filter-list li {
+    margin-bottom: 10px; /* Medzera medzi riadkami */
+}
+
+.filter-list label {
+    display: flex;
+    align-items: center;
+    cursor: pointer; /* Zmení kurzor na ruku */
+    font-size: 14px;
+}
+
+.filter-list input {
+    margin-right: 10px; /* Medzera medzi štvorčekom a textom */
+}
+
 main {
     flex: 1;
-    padding: 30px; /* Viac miesta okolo kariet */
+    padding: 30px;
     overflow-y: scroll;
-    
-    /* Aby bol footer naspodku, ak je málo kariet */
     display: flex;
     flex-direction: column;
 }
@@ -83,7 +135,6 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 20px;
-    /* Aby grid nezabral všetko miesto a footer nebol nalepený */
     margin-bottom: 40px; 
 }
 
@@ -91,18 +142,15 @@ main {
 .card {
     background-color: #161b22;
     border: 1px solid #30363d;
-    border-radius: 8px; /* Krajšie rohy */
+    border-radius: 8px;
     padding: 20px;
-    
-    /* VYLEPŠENIE: Plynulá zmena */
     transition: 0.3s;
 }
 
-/* VYLEPŠENIE: Efekt pri nabehnutí myšou */
 .card:hover {
-    background-color: #1c2128; /* Trošku svetlejšia */
-    border-color: #58a6ff;     /* Modrý okraj */
-    transform: translateY(-5px); /* Posunie sa hore */
+    background-color: #1c2128;
+    border-color: #58a6ff;
+    transform: translateY(-5px);
 }
 
 .card h4 {
@@ -116,15 +164,15 @@ main {
     display: block;
     margin-top: 15px;
     font-size: 12px;
-    border-top: 1px solid #30363d; /* Čiara nad spodkom */
+    border-top: 1px solid #30363d;
     padding-top: 10px;
 }
 
 /* --- Footer --- */
 footer {
-    margin-top: auto; /* Tlačí footer úplne dole */
+    margin-top: auto;
     text-align: center;
-    color: #484f58; /* Tmavá šedá */
+    color: #484f58;
     font-size: 12px;
     padding-top: 20px;
     padding-bottom: 10px;
