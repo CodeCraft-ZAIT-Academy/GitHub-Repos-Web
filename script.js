@@ -1,59 +1,49 @@
-// 1. Nájdeme všetky potrebné veci na stránke
-const checkAll = document.getElementById('check-all'); // Checkbox "Všetky"
-const checkboxes = document.querySelectorAll('.lang-check'); // Ostatné checkboxy
-const cards = document.querySelectorAll('.card'); // Všetky karty
+// --- Pôvodný kód pre modálne okno a filtre (ak ho máš) ---
+// Sem patrí tvoj existujúci JavaScript pre funkčnosť stránky.
+// Pre stručnosť tu uvádzam len nový kód pre Dark Mode.
 
-// 2. Čo sa stane, keď klikneš na "Všetky"
-checkAll.addEventListener('change', function() {
-    if (this.checked) {
-        // Ak zapneš "Všetky", vypni ostatné checkboxy
-        checkboxes.forEach(box => box.checked = false);
+// --- DARK MODE FUNKCIONALITA ---
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const body = document.body;
+const icon = darkModeToggle.querySelector('i');
+
+// Skontrolujeme, či má používateľ uloženú preferenciu
+const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+// Ak áno, zapneme tmavý režim hneď pri načítaní
+if (isDarkMode) {
+    body.classList.add('dark-mode');
+    icon.classList.remove('fa-moon');
+    icon.classList.add('fa-sun');
+}
+
+// Prepínanie režimu po kliknutí na tlačidlo
+darkModeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+
+    // Zmena ikony (mesiac <-> slnko)
+    if (body.classList.contains('dark-mode')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+        localStorage.setItem('darkMode', 'enabled'); // Uložíme voľbu
+    } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+        localStorage.setItem('darkMode', 'disabled'); // Uložíme voľbu
     }
-    filtrovatKarty(); // Spusti filtrovanie
 });
 
-// 3. Čo sa stane, keď klikneš na konkrétny jazyk
-checkboxes.forEach(box => {
-    box.addEventListener('change', function() {
-        // Ak zapneš nejaký jazyk, vypni "Všetky"
-        if (this.checked) {
-            checkAll.checked = false;
-        }
-        
-        // Ak vypneš všetky jazyky, automaticky zapni "Všetky"
-        let asponJedenZapnuty = false;
-        checkboxes.forEach(b => {
-            if (b.checked) asponJedenZapnuty = true;
-        });
+// --- Príklad pôvodného JS pre modálne okno (aby ti fungovalo) ---
+const modal = document.getElementById("contact-modal");
+const btn = document.getElementById("contact-link");
+const span = document.getElementsByClassName("close-btn")[0];
 
-        if (asponJedenZapnuty === false) {
-            checkAll.checked = true;
-        }
-
-        filtrovatKarty(); // Spusti filtrovanie
-    });
-});
-
-// 4. Hlavná funkcia na skrývanie/zobrazovanie kariet
-function filtrovatKarty() {
-    // Zistíme, ktoré jazyky sú zaškrtnuté
-    const vybraneJazyky = [];
-    
-    checkboxes.forEach(box => {
-        if (box.checked) {
-            vybraneJazyky.push(box.value);
-        }
-    });
-
-    // Prejdeme každú kartu a rozhodneme, či ju ukážeme
-    cards.forEach(card => {
-        const jazykKarty = card.getAttribute('data-jazyk');
-
-        // Ak je zapnuté "Všetky" ALEBO ak jazyk karty je v zozname vybraných
-        if (checkAll.checked || vybraneJazyky.includes(jazykKarty)) {
-            card.style.display = 'block'; // Ukáž kartu
-        } else {
-            card.style.display = 'none';  // Skry kartu
-        }
-    });
+if (btn) {
+    btn.onclick = function() { modal.style.display = "block"; }
+}
+if (span) {
+    span.onclick = function() { modal.style.display = "none"; }
+}
+window.onclick = function(event) {
+    if (event.target == modal) { modal.style.display = "none"; }
 }

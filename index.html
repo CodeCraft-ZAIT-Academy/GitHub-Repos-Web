@@ -3,86 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>GR Dashboard</title>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <div class="logo-box">
-            <img src="logo.png" alt="Logo">
+        <div class="logo">
             <b>GITREPOS</b>
         </div>
 
-        <nav class="nav-menu">
+        <nav class="menu">
             <a href="#" class="active"><i class="fa-solid fa-house"></i> Domov</a>
             <a href="#"><i class="fa-solid fa-circle-info"></i> Info</a>
-            <a href="#"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+            <a href="#" id="contact-link"><i class="fa-solid fa-envelope"></i> Kontakt</a>
         </nav>
-
-        <div class="status">Live</div>
     </header>
 
     <div class="layout">
         
-        <aside>
+        <aside class="sidebar">
             <h3>Filtrovať jazyk</h3>
             
-            <ul class="filter-list">
+            <ul class="filtre">
                 <li>
-                    <label>
-                        <input type="checkbox" id="check-all" checked> Všetky
-                    </label>
+                    <input type="checkbox" id="check-all" checked>
+                    <label for="check-all">Všetky</label>
                 </li>
                 <li>
-                    <label>
-                        <input type="checkbox" class="lang-check" value="javascript"> JavaScript
-                    </label>
+                    <input type="checkbox" id="lang-js" class="lang-check" value="javascript">
+                    <label for="lang-js">JavaScript</label>
                 </li>
                 <li>
-                    <label>
-                        <input type="checkbox" class="lang-check" value="python"> Python
-                    </label>
+                    <input type="checkbox" id="lang-python" class="lang-check" value="python">
+                    <label for="lang-python">Python</label>
                 </li>
                 <li>
-                    <label>
-                        <input type="checkbox" class="lang-check" value="java"> Java
-                    </label>
+                    <input type="checkbox" id="lang-java" class="lang-check" value="java">
+                    <label for="lang-java">Java</label>
                 </li>
                 <li>
-                    <label>
-                        <input type="checkbox" class="lang-check" value="c"> C / C++
-                    </label>
+                    <input type="checkbox" id="lang-c" class="lang-check" value="c">
+                    <label for="lang-c">C / C++</label>
                 </li>
             </ul>
         </aside>
 
         <main>
             <div id="grid">
-                <div class="card" data-jazyk="javascript">
+                <div class="card" data-lang="javascript">
                     <h4>facebook/react</h4>
                     <p>Knižnica pre tvorbu UI.</p>
                     <small>JavaScript • ★ 10k</small>
                 </div>
                 
-                <div class="card" data-jazyk="java">
+                 <div class="card" data-lang="java">
                     <h4>google/guava</h4>
                     <p>Sada knižníc pre Javu.</p>
                     <small>Java • ★ 5k</small>
                 </div>
 
-                <div class="card" data-jazyk="c">
+                <div class="card" data-lang="c">
                     <h4>torvalds/linux</h4>
                     <p>Linux kernel.</p>
                     <small>C • ★ 25k</small>
                 </div>
             </div>
 
-            <footer>© 2025 Môj Projekt</footer>
+            <footer>
+                © 2025 Môj Projekt
+            </footer>
         </main>
     </div>
+
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Napíšte nám</h2>
+            <form>
+                <input type="email" placeholder="Váš email..." required>
+                <textarea rows="4" placeholder="Vaša správa..." required></textarea>
+                <button type="submit">Odoslať</button>
+            </form>
+        </div>
+    </div>
+
+    <button id="dark-mode-toggle">
+        <i class="fa-solid fa-moon"></i>
+    </button>
 
     <script src="script.js"></script>
 </body>
