@@ -1,216 +1,171 @@
 /* =========================================
-   1. KONFIGURÁCIA (Teraz hľadáme globálne)
+   1. NASTAVENIA
    ========================================= */
-// Hľadáme repozitáre s viac ako 1000 hviezdami, zoradené podľa hviezd
 const API_URL = 'https://api.github.com/search/repositories?q=stars:>1000&sort=stars&order=desc&per_page=30';
-
-/* =========================================
-   2. DARK MODE
-   ========================================= */
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-const body = document.body;
-const icon = darkModeToggle ? darkModeToggle.querySelector('i') : null;
-
-if (localStorage.getItem('darkMode') === 'enabled') {
-    body.classList.add('dark-mode');
-    if (icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
-}
-
-if (darkModeToggle) {
-    darkModeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-        if (body.classList.contains('dark-mode')) {
-            if (icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
-            localStorage.setItem('darkMode', 'enabled');
-        } else {
-            if (icon) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
-            localStorage.setItem('darkMode', 'disabled');
-        }
-    });
-}
-
-/* =========================================
-   3. HLAVNÁ FUNKCIA: NAČÍTANIE DÁT
-   ========================================= */
 const grid = document.getElementById('grid');
-const filterList = document.querySelector('.filtre'); 
+const sidebar = document.querySelector('.sidebar');
+let repos = [];
 
-async function loadRepositories() {
+/* =========================================
+   2. AGRESÍVNY ŠTÝL (Prebije všetko ostatné)
+   ========================================= */
+const style = document.createElement('style');
+style.innerHTML = `
+    /* 1. ÚPLNE SKRYŤ SYSTÉMOVÉ TLAČIDLÁ */
+    .sidebar input { 
+        display: none !important; 
+        width: 0 !important;
+        height: 0 !important;
+        opacity: 0 !important;
+    }
+
+    /* 2. RESET TEXTU */
+    .sidebar label {
+        display: flex !important;
+        align-items: center !important;
+        cursor: pointer !important;
+        padding: 5px 0 !important;
+        color: #bdc3c7 !important;
+        background: none !important;
+        border: none !important;
+    }
+
+    /* 3. NÁŠ JEDINÝ RÁMČEK */
+    .box {
+        min-width: 18px; height: 18px;
+        border: 2px solid #7f8c8d;
+        margin-right: 10px;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(255,255,255,0.05);
+    }
+
+    /* KRÚŽOK (pre radio) */
+    .okruhly { border-radius: 50%; }
+    /* ŠTVOREC (pre checkbox) */
+    .hranaty { border-radius: 4px; }
+
+    /* 4. KEĎ KLIKNEŠ (Zafarbí sa) */
+    input:checked + .box {
+        background: #3498db;
+        border-color: #3498db;
+    }
+
+    /* 5. VYKRESLENIE SYMBOLU VNÚTRI */
+    input:checked + .okruhly::after {
+        content: ""; width: 6px; height: 6px; background: white; border-radius: 50%; display: block;
+    }
+    input:checked + .hranaty::after {
+        content: "✔"; font-size: 12px; color: white; line-height: 1; display: block;
+    }
+
+    /* Zvýraznenie textu */
+    input:checked ~ span { color: white; font-weight: bold; }
+`;
+document.head.appendChild(style);
+
+/* =========================================
+   3. JEDNODUCHÉ NAČÍTANIE
+   ========================================= */
+async function load() {
     try {
-        grid.innerHTML = '<p style="text-align:center; width:100%; color: #888;">Načítavam TOP repozitáre sveta...</p>';
-
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error('Nepodarilo sa načítať dáta');
-        
-        const data = await response.json();
-        // POZOR: Pri vyhľadávaní sú repozitáre skryté v poli "items"
-        const repos = data.items; 
-
-        // 1. Vyčistíme grid
-        grid.innerHTML = '';
-        
-        // 2. Vygenerujeme karty
-        repos.forEach(repo => createCard(repo));
-
-        // 3. Vygenerujeme filtre podľa toho, čo sme stiahli
-        generateFilters(repos);
-
-        // 4. Spustíme filtrovanie
-        filterCards();
-
-    } catch (error) {
-        grid.innerHTML = `<p style="color:red; text-align:center;">Chyba: ${error.message}</p>`;
-        console.error(error);
-    }
+        grid.innerHTML = '<p style="text-align:center; color:#888;">Načítavam...</p>';
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        repos = data.items;
+        renderSidebar();
+        renderGrid();
+    } catch (e) { console.log(e); }
 }
 
 /* =========================================
-   4. GENERÁTOR FILTROV
+   4. HTML PRE SIDEBAR (Len to najnutnejšie)
    ========================================= */
-function generateFilters(repos) {
-    const languages = new Set();
-    repos.forEach(repo => {
-        if (repo.language) {
-            languages.add(repo.language);
-        }
-    });
+function renderSidebar() {
+    const langs = [...new Set(repos.map(r => r.language).filter(l => l))].sort();
 
-    if (filterList) {
-        filterList.innerHTML = '';
+    // Vyčistíme sidebar a vložíme nanovo
+    sidebar.innerHTML = `
+        <br>
+        <h3>Zoradiť</h3>
+        <ul class="filtre" style="list-style:none; padding:0">
+            <li><label><input type="radio" name="sort" value="stars" checked onchange="renderGrid()"> <div class="box okruhly"></div> <span>Hviezdy</span></label></li>
+            <li><label><input type="radio" name="sort" value="updated" onchange="renderGrid()"> <div class="box okruhly"></div> <span>Dátum</span></label></li>
+            <li><label><input type="radio" name="sort" value="issues" onchange="renderGrid()"> <div class="box okruhly"></div> <span>Issues</span></label></li>
+        </ul>
 
-        // "Všetky"
-        const liAll = document.createElement('li');
-        liAll.innerHTML = `
-            <label>
-                <input type="checkbox" id="check-all" checked> Všetky
-            </label>
-        `;
-        filterList.appendChild(liAll);
-
-        // Zoradíme jazyky abecedne a pridáme ich
-        Array.from(languages).sort().forEach(lang => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <label>
-                    <input type="checkbox" class="lang-check" value="${lang.toLowerCase()}"> ${lang}
-                </label>
-            `;
-            filterList.appendChild(li);
-        });
-
-        setupFilterLogic();
-    }
-}
-
-/* =========================================
-   5. LOGIKA FILTROVANIA
-   ========================================= */
-function filterCards() {
-    const checkAll = document.getElementById('check-all');
-    const langCheckboxes = document.querySelectorAll('.lang-check');
-    const cards = document.querySelectorAll('.card');
-
-    if (!checkAll) return;
-
-    const activeLangs = Array.from(langCheckboxes)
-                             .filter(cb => cb.checked)
-                             .map(cb => cb.value.toLowerCase());
-
-    const showAll = checkAll.checked || activeLangs.length === 0;
-
-    cards.forEach(card => {
-        const cardLang = card.getAttribute('data-lang');
-        card.style.animation = 'none';
-        card.offsetHeight; 
-
-        if (showAll || activeLangs.includes(cardLang)) {
-            card.style.display = 'block';
-            card.style.animation = 'fadeIn 0.4s ease forwards';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-}
-
-function setupFilterLogic() {
-    const checkAll = document.getElementById('check-all');
-    const langCheckboxes = document.querySelectorAll('.lang-check');
-
-    if (checkAll) {
-        checkAll.addEventListener('change', () => {
-            if (checkAll.checked) {
-                langCheckboxes.forEach(cb => cb.checked = false);
-            } else if (!Array.from(langCheckboxes).some(cb => cb.checked)) {
-                checkAll.checked = true;
-            }
-            filterCards();
-        });
-    }
-
-    langCheckboxes.forEach(cb => {
-        cb.addEventListener('change', () => {
-            if (cb.checked) checkAll.checked = false;
-            if (!Array.from(langCheckboxes).some(c => c.checked)) checkAll.checked = true;
-            filterCards();
-        });
-    });
-}
-
-/* =========================================
-   6. VYTVORENIE KARTY & FARBY
-   ========================================= */
-function createCard(repo) {
-    const card = document.createElement('div');
-    card.classList.add('card');
-    
-    const lang = repo.language ? repo.language.toLowerCase() : 'other';
-    const langDisplay = repo.language || 'Iné';
-    
-    card.setAttribute('data-lang', lang);
-
-    // Formátovanie čísla (napr. 12000 -> 12k)
-    const stars = repo.stargazers_count > 1000 
-                  ? (repo.stargazers_count / 1000).toFixed(1) + 'k' 
-                  : repo.stargazers_count;
-
-    card.innerHTML = `
-        <h4><a href="${repo.html_url}" target="_blank" style="text-decoration:none; color:inherit;">${repo.name}</a></h4>
-        <p>${repo.description ? repo.description.substring(0, 100) + '...' : 'Bez popisu'}</p>
-        <small>
-            <i class="fa-solid fa-circle" style="font-size: 8px; color: ${getLangColor(lang)}"></i> 
-            ${langDisplay} • 
-            <i class="fa-regular fa-star"></i> ${stars}
-        </small>
+        <br>
+        <h3>Jazyky</h3>
+        <ul class="filtre" style="list-style:none; padding:0">
+            <li><label><input type="checkbox" id="all" checked onchange="toggleAll()"> <div class="box hranaty"></div> <span>Všetky</span></label></li>
+            ${langs.map(l => `
+                <li><label><input type="checkbox" class="lang" value="${l}" onchange="toggleLang()"> <div class="box hranaty"></div> <span>${l}</span></label></li>
+            `).join('')}
+        </ul>
     `;
-
-    grid.appendChild(card);
-}
-
-function getLangColor(lang) {
-    const colors = {
-        javascript: '#f1e05a', python: '#3572A5', java: '#b07219',
-        c: '#555555', 'c++': '#f34b7d', 'c#': '#178600',
-        html: '#e34c26', css: '#563d7c', typescript: '#2b7489',
-        php: '#4F5D95', shell: '#89e051', vue: '#41b883',
-        go: '#00ADD8', rust: '#dea584', ruby: '#701516'
-    };
-    return colors[lang] || '#ccc';
 }
 
 /* =========================================
-   7. MODAL & START
+   5. LOGIKA (Prepínanie)
    ========================================= */
-const modal = document.getElementById("contact-modal");
-const btn = document.getElementById("contact-link");
-const closeBtn = document.querySelector(".close-btn");
+function toggleAll() {
+    const all = document.getElementById('all');
+    if (all.checked) document.querySelectorAll('.lang').forEach(c => c.checked = false);
+    renderGrid();
+}
 
-if (btn) btn.onclick = (e) => { e.preventDefault(); modal.style.display = "block"; };
-if (closeBtn) closeBtn.onclick = () => modal.style.display = "none";
-window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
+function toggleLang() {
+    const all = document.getElementById('all');
+    const checks = document.querySelectorAll('.lang:checked');
+    all.checked = checks.length === 0;
+    renderGrid();
+}
 
-const styleSheet = document.createElement("style");
-styleSheet.innerText = `@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }`;
-document.head.appendChild(styleSheet);
+/* =========================================
+   6. GRID A ISSUES (Zoradenie)
+   ========================================= */
+function renderGrid() {
+    const sort = document.querySelector('input[name="sort"]:checked').value;
+    const checked = [...document.querySelectorAll('.lang:checked')].map(c => c.value);
+    const showAll = document.getElementById('all').checked;
 
-// SPUSTENIE
-loadRepositories();
+    // Filter
+    let list = repos.filter(r => showAll || (r.language && checked.includes(r.language)));
+
+    // Sort (Issues od najväčšieho)
+    list.sort((a, b) => {
+        if (sort === 'stars') return b.stargazers_count - a.stargazers_count;
+        if (sort === 'issues') return b.open_issues_count - a.open_issues_count;
+        return new Date(b.updated_at) - new Date(a.updated_at);
+    });
+
+    // Vykreslenie
+    grid.innerHTML = '';
+    list.forEach(r => {
+        const stars = r.stargazers_count > 1000 ? (r.stargazers_count/1000).toFixed(1)+'k' : r.stargazers_count;
+        const color = {javascript:'#f1e05a', python:'#3572A5', java:'#b07219', html:'#e34c26', css:'#563d7c'}[r.language?.toLowerCase()] || '#ccc';
+
+        grid.innerHTML += `
+            <div class="card" style="animation: fadeIn 0.4s ease forwards">
+                <h4><a href="${r.html_url}" target="_blank" style="color:inherit;text-decoration:none">${r.name}</a></h4>
+                <p>${r.description ? r.description.substring(0, 80)+'...' : 'Bez popisu'}</p>
+                <div style="margin-top:15px; font-size:0.85rem; color:#666">
+                    <div><i class="fa-solid fa-circle" style="color:${color};font-size:8px"></i> <b>${r.language || 'Iné'}</b> • <i class="fa-regular fa-star"></i> ${stars}</div>
+                    <div style="display:flex; justify-content:space-between; margin-top:5px; opacity:0.8">
+                        <span>📅 ${new Date(r.updated_at).toLocaleDateString('sk')}</span>
+                        <span>🐛 ${r.open_issues_count} Issues</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+/* --- Dark Mode --- */
+const toggle = document.getElementById('dark-mode-toggle');
+if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+if (toggle) toggle.onclick = () => {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+};
+
+load();
