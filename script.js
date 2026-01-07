@@ -8,7 +8,7 @@ const sidebar = document.querySelector('.sidebar');
 let repos = [];
 
 /* =========================================
-   2. AGRESÍVNY ŠTÝL PRE CHECKBOXY
+    ŠTÝL PRE CHECKBOXY
    ========================================= */
 // Tento štýl sa vloží dynamicky, aby prepísal všetko ostatné
 const style = document.createElement('style');
@@ -80,17 +80,11 @@ function renderSidebar() {
     // Zistíme unikátne jazyky z načítaných dát
     const availableLangs = [...new Set(repos.map(r => r.language).filter(l => l))].sort();
 
-    // Ak chceš zachovať svoje pevné filtre z HTML, túto funkciu môžeš vymazať.
-    // Ale toto je lepšie, lebo to ukáže len jazyky, ktoré reálne prišli z API.
     
     // Nájde element v HTML, kam vložiť filtre (ak existuje zoznam, vymažeme ho a dáme nový)
     const filterList = document.querySelector('.filtre');
     if (!filterList) return;
 
-    // Zachováme HTML štruktúru pre "Zoradiť", prepíšeme len "Jazyky" ak treba.
-    // Pre jednoduchosť v tomto kóde predpokladám, že Sidebar sa generuje celý cez JS (ako v predchádzajúcich verziách),
-    // alebo len obsluhujeme existujúci.
-    
     // Keďže v HTML máš filtre natvrdo, poďme ich len oživiť, namiesto premazávania:
     // Pridáme im event listenery, ak ešte nemajú.
     
@@ -174,7 +168,7 @@ function renderGrid() {
         // Dátum
         const date = new Date(r.updated_at).toLocaleDateString('sk-SK');
 
-        // TU JE OPRAVA ISSUES: Pridal som title atribút, ktorý vysvetľuje číslo
+        //  OPRAVA ISSUES
         grid.innerHTML += `
             <div class="card" style="animation: fadeIn 0.4s ease forwards">
                 <h4>
