@@ -154,7 +154,7 @@ main {
     background-color: var(--bg-main);
     padding: 30px;
     overflow-y: auto;
-    display: flex;
+    display: static;
     flex-direction: column;
 }
 
@@ -173,7 +173,7 @@ main {
     padding: 20px;
     box-shadow: 0 2px 5px var(--shadow-color);
     transition: transform 0.2s, box-shadow 0.2s;
-    display: flex;
+    display: static;
     flex-direction: column;
     justify-content: space-between;
 }
