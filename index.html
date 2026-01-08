@@ -2,6 +2,7 @@
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GR Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -12,7 +13,6 @@
         <div class="logo">
             <b>GITREPOS</b>
         </div>
-
         <nav class="menu">
             <a href="#" class="active"><i class="fa-solid fa-house"></i> Domov</a>
             <a href="#"><i class="fa-solid fa-circle-info"></i> Info</a>
@@ -21,40 +21,42 @@
     </header>
 
     <div class="layout">
-        
         <aside class="sidebar">
-            <h3>Filtrovať jazyk</h3>
             
+            <h3>Zoradiť</h3>
             <ul class="filtre">
                 <li>
-                    <input type="checkbox" id="check-all" checked>
-                    <label for="check-all">Všetky</label>
+                    <label>
+                        <input type="radio" name="sort" value="stars" checked>
+                        <div class="custom-box is-round"></div>
+                        <span>Hviezdy</span>
+                    </label>
                 </li>
                 <li>
-                    <input type="checkbox" id="lang-js" class="lang-check" value="javascript">
-                    <label for="lang-js">JavaScript</label>
+                    <label>
+                        <input type="radio" name="sort" value="updated">
+                        <div class="custom-box is-round"></div>
+                        <span>Dátum</span>
+                    </label>
                 </li>
                 <li>
-                    <input type="checkbox" id="lang-python" class="lang-check" value="python">
-                    <label for="lang-python">Python</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="lang-java" class="lang-check" value="java">
-                    <label for="lang-java">Java</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="lang-c" class="lang-check" value="c">
-                    <label for="lang-c">C / C++</label>
+                    <label>
+                        <input type="radio" name="sort" value="issues">
+                        <div class="custom-box is-round"></div>
+                        <span>Issues</span>
+                    </label>
                 </li>
             </ul>
+
+            <h3>Filtrovať jazyk</h3>
+            <ul class="filtre" id="lang-list">
+                </ul>
+
         </aside>
 
         <main>
             <div id="grid"></div>
-
-            <footer>
-                © 2025 Môj Projekt
-            </footer>
+            <footer>© 2025 Môj Projekt</footer>
         </main>
     </div>
 
