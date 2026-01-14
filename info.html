@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info - GR Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="index.html">GITREPOS</a>
+        </div>
+        <nav class="menu">
+            <a href="index.html"><i class="fa-solid fa-house"></i> Domov</a>
+            <a href="info.html" class="active"><i class="fa-solid fa-circle-info"></i> Info</a>
+            <a href="contact.html"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        </nav>
+    </header>
+
+    <div class="layout">
+        <main style="max-width: 1000px; margin: 0 auto; width: 100%; padding: 40px 20px;">
+            
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px; color: #3498db; font-weight: 600;">O projekte GitRepos</h1>
+                <p style="font-size: 1.1rem; color: var(--text-card-small);">Moderný dashboard pre sledovanie trendov na GitHube.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 50px;">
+                
+                <div class="card" style="text-align: center; padding: 40px 30px;">
+                    <div style="width: 70px; height: 70px; background: rgba(52, 152, 219, 0.1); color: #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px auto;">
+                        <i class="fa-solid fa-cloud-arrow-down" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <h3>Reálne dáta</h3>
+                    <p style="margin-top: 15px; color: var(--text-card-small);">
+                        Aplikácia sa pripája priamo na <strong>GitHub API</strong> a sťahuje vždy čerstvých 30 najpopulárnejších repozitárov sveta.
+                    </p>
+                </div>
+
+                <div class="card" style="text-align: center; padding: 40px 30px;">
+                    <div style="width: 70px; height: 70px; background: rgba(231, 76, 60, 0.1); color: #e74c3c; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px auto;">
+                        <i class="fa-solid fa-filter" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <h3>Inteligentný Filter</h3>
+                    <p style="margin-top: 15px; color: var(--text-card-small);">
+                        Automaticky detekujeme programovacie jazyky (Python, JS, Java...) a umožňujeme vám podľa nich filtrovať.
+                    </p>
+                </div>
+
+                <div class="card" style="text-align: center; padding: 40px 30px;">
+                    <div style="width: 70px; height: 70px; background: rgba(46, 204, 113, 0.1); color: #2ecc71; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px auto;">
+                        <i class="fa-solid fa-sort" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <h3>Triedenie</h3>
+                    <p style="margin-top: 15px; color: var(--text-card-small);">
+                        Zistite, čo je populárne. Zoraďte projekty podľa počtu hviezd, aktívnych vývojárov (forky) alebo chýb (issues).
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="card" style="padding: 30px; border-left: 5px solid var(--accent-color);">
+                <h3><i class="fa-solid fa-code"></i> Použité technológie</h3>
+                <p style="margin-top: 10px; line-height: 1.8;">
+                    Tento projekt bol vytvorený ako školské zadanie. Je postavený na čistom <strong>HTML5</strong> a <strong>CSS3</strong> (využíva Grid a Flexbox pre responzivitu). 
+                    Logiku zabezpečuje <strong>Vanilla JavaScript</strong>, ktorý asynchrónne komunikuje so servermi GitHubu. Font: <strong>Poppins</strong>.
+                </p>
+            </div>
+
+            <footer>© 2025 Matúš Beke</footer>
+        </main>
+    </div>
+
+    <button id="dark-mode-toggle">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

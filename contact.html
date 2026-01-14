@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt - GR Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="index.html">GITREPOS</a>
+        </div>
+        <nav class="menu">
+            <a href="index.html"><i class="fa-solid fa-house"></i> Domov</a>
+            <a href="info.html"><i class="fa-solid fa-circle-info"></i> Info</a>
+            <a href="contact.html" class="active"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        </nav>
+    </header>
+
+    <div class="layout">
+        <main style="max-width: 900px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; justify-content: center;">
+            
+            <h1 style="text-align: center; margin-bottom: 30px; font-weight: 600; color: var(--text-main);">Spojte sa s nami</h1>
+
+            <div class="card" style="display: flex; flex-wrap: wrap; gap: 40px; padding: 40px;">
+                
+                <div style="flex: 1; min-width: 300px;">
+                    <h2 style="margin-bottom: 20px; color: #3498db; font-weight: 600;">Matúš Beke</h2>
+                    <p style="margin-bottom: 25px; line-height: 1.8; color: var(--text-card-small);">
+                        Sme tu pre vás. Ak máte akékoľvek otázky, nápady na vylepšenie alebo záujem o spoluprácu, neváhajte nás kontaktovať.
+                    </p>
+
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 45px; height: 45px; background: rgba(52, 152, 219, 0.1); color: #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <span style="font-weight: 500;">+421 903 844 400</span>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 45px; height: 45px; background: rgba(231, 76, 60, 0.1); color: #e74c3c; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <span style="font-weight: 500;">matus.beke7@gmail.com</span>
+                        </div>
+
+                        <div style="margin-top: 10px; display: flex; gap: 15px;">
+                            <a href="https://github.com" target="_blank" style="text-decoration: none;">
+                                <div style="width: 45px; height: 45px; background: #333; color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                    <i class="fa-brands fa-github" style="font-size: 1.4rem;"></i>
+                                </div>
+                            </a>
+                            <a href="https://facebook.com" target="_blank" style="text-decoration: none;">
+                                <div style="width: 45px; height: 45px; background: #1877F2; color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                    <i class="fa-brands fa-facebook-f" style="font-size: 1.4rem;"></i>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div style="flex: 1; min-width: 300px; background: var(--bg-main); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color);">
+                    <h3 style="margin-bottom: 20px; font-weight: 600;">Napíšte nám správu</h3>
+                    
+                    <form action="https://formspree.io/f/TU_VLOZ_SVOJ_KOD" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+                        
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-card-small); text-transform: uppercase; margin-bottom: 5px; display: block;">Váš Email</label>
+                            <input type="email" name="email" placeholder="vas@email.com" required 
+                                   style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: var(--bg-card); color: var(--text-main); font-size: 0.95rem;">
+                        </div>
+                        
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-card-small); text-transform: uppercase; margin-bottom: 5px; display: block;">Text správy</label>
+                            <textarea name="message" rows="5" placeholder="Sem napíšte, čo máte na srdci..." required
+                                      style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: var(--bg-card); color: var(--text-main); font-size: 0.95rem;"></textarea>
+                        </div>
+
+                        <button type="submit" 
+                                style="background: var(--accent-color); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; margin-top: 10px; transition: opacity 0.3s; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);">
+                            Odoslať správu
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <footer>© 2025 Matúš Beke</footer>
+        </main>
+    </div>
+
+    <button id="dark-mode-toggle">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
