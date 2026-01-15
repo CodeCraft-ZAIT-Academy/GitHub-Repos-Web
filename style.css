@@ -146,7 +146,7 @@ main {
     background-color: var(--bg-main);
     padding: 30px;
     overflow-y: auto;
-    display: flex; flex-direction: column;
+    display: static; flex-direction: column;
 }
 
 #grid {
@@ -164,7 +164,7 @@ main {
     padding: 20px;
     box-shadow: 0 2px 5px var(--shadow-color);
     transition: transform 0.2s, box-shadow 0.2s;
-    display: flex; flex-direction: column; justify-content: space-between;
+    display: static; flex-direction: column; justify-content: space-between;
 }
 .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px var(--shadow-color); border-color: var(--accent-color); }
 .card h4 { margin-bottom: 10px; font-size: 1.1rem; color: var(--text-card-title); font-weight: 600; }
