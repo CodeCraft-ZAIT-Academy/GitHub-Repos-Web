@@ -416,3 +416,88 @@ body.dark-mode #dark-mode-toggle {
     border-radius: 12px;
     cursor: pointer;
 }
+/* =========================================
+   10. RESPONZIVITA (MOBIL A TABLET)
+   ========================================= */
+
+@media (max-width: 768px) {
+    
+    /* --- HLAVIČKA --- */
+    header {
+        height: auto; /* Výška sa prispôsobí obsahu */
+        flex-direction: column; /* Prvky pod seba */
+        padding: 15px;
+    }
+
+    .menu {
+        margin-top: 15px;
+        display: flex;
+        gap: 20px; /* Väčšie medzery pre prsty */
+        justify-content: center;
+        flex-wrap: wrap; /* Ak sa nezmestia, zalomia sa */
+        width: 100%;
+    }
+
+    .menu a {
+        margin-left: 0; /* Zrušíme odsadenie zľava */
+        padding: 5px 10px; /* Zväčšíme klikaciu plochu */
+        background: rgba(0,0,0,0.03); /* Jemné pozadie tlačidiel */
+        border-radius: 5px;
+    }
+
+    /* --- ROZLOŽENIE --- */
+    .layout {
+        flex-direction: column; /* Sidebar hore, obsah dole */
+        height: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        display: flex; /* Aby sme filtre mohli dať vedľa seba ak chceme, alebo pod seba */
+        flex-direction: column;
+    }
+    
+    main {
+        padding: 20px 15px; /* Menšie odsadenie na bokoch */
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    /* --- KARTIČKY --- */
+    /* Na mobile jedna karta na riadok */
+    .grid, #grid, #vysledky-hladania {
+        grid-template-columns: 1fr; 
+    }
+
+    /* --- KONTAKT A VIZITKA --- */
+    .contact-wrapper {
+        flex-direction: column; /* Pod seba */
+        gap: 30px;
+    }
+
+    .contact-info, .contact-form, .contact-card {
+        min-width: 100%; /* Roztiahnuť na celú šírku */
+    }
+
+    /* Centrovanie vizitky na mobile */
+    .info-item {
+        justify-content: flex-start; /* Zarovnať doľava, lepšie sa to číta */
+    }
+
+    /* --- TEXTY --- */
+    h1 {
+        font-size: 1.8rem; /* Menší nadpis */
+    }
+    
+    /* Tlačidlo pre Dark Mode posunieme trochu vyššie, aby nezavadzalo */
+    #dark-mode-toggle {
+        bottom: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+    }
+}
