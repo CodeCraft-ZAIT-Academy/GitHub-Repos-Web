@@ -25,39 +25,59 @@
         <aside class="sidebar">
             <h3>Filter Parametre</h3>
             
-            <div>
-                <label>Kľúčové slovo</label>
-                <input type="text" id="hladany-nazov" placeholder="napr. Tetris...">
-            </div>
+            <form onsubmit="event.preventDefault(); mojeHladanie();">
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; color:#bdc3c7; margin-bottom:5px; font-size:0.9rem;">
+                        Kľúčové slovo
+                    </label>
+                    <input type="text" id="hladany-nazov" placeholder="napr. Tetris, Dashboard..." 
+                           style="width:100%; padding:10px; border-radius:4px; border:1px solid #7f8c8d; background:#fff; color:#333;">
+                </div>
 
-            <div>
-                <label>Jazyk (nepovinné)</label>
-                <input type="text" id="hladany-jazyk" placeholder="napr. python...">
-            </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; color:#bdc3c7; margin-bottom:5px; font-size:0.9rem;">
+                        Jazyk (nepovinné)
+                    </label>
+                    <input type="text" id="hladany-jazyk" placeholder="napr. python, java..." 
+                           style="width:100%; padding:10px; border-radius:4px; border:1px solid #7f8c8d; background:#fff; color:#333;">
+                </div>
 
-            <div>
-                <label>Min. Hviezd (nepovinné)</label>
-                <input type="number" id="hladane-hviezdy" placeholder="napr. 1000">
-            </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; color:#bdc3c7; margin-bottom:5px; font-size:0.9rem;">
+                        Min. Hviezd (nepovinné)
+                    </label>
+                    <input type="number" id="hladane-hviezdy" placeholder="napr. 1000" min="0"
+                           style="width:100%; padding:10px; border-radius:4px; border:1px solid #7f8c8d; background:#fff; color:#333;">
+                </div>
 
-            <div style="margin-top: 15px;">
-                <label>Zoradiť výsledky</label>
-                <select id="hladane-zoradenie">
-                    <option value="stars">Najviac Hviezd ⭐</option>
-                    <option value="forks">Najviac Forkov 🍴</option>
-                    <option value="issues">Najviac Issues 🐛</option>
-                    <option value="updated">Najnovšie 📅</option>
-                </select>
-            </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
 
-            <div style="margin-top: 15px;">
-                <label>Koľko zobraziť?</label>
-                <input type="number" id="hladany-pocet" value="6" min="1" max="50">
-            </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; color:#bdc3c7; margin-bottom:5px; font-size:0.9rem;">
+                        Zoradiť výsledky
+                    </label>
+                    <select id="hladane-zoradenie" style="width:100%; padding:10px; border-radius:4px; border:1px solid #7f8c8d;">
+                        <option value="stars">Najviac Hviezd ⭐</option>
+                        <option value="forks">Najviac Forkov 🍴</option>
+                        <option value="issues">Najviac Issues 🐛</option>
+                        <option value="updated">Najnovšie 📅</option>
+                    </select>
+                </div>
 
-            <button onclick="mojeHladanie()" class="btn">
-                <i class="fa-solid fa-search"></i> Vyhľadať
-            </button>
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; color:#bdc3c7; margin-bottom:5px; font-size:0.9rem;">
+                        Koľko zobraziť?
+                    </label>
+                    <input type="number" id="hladany-pocet" value="6" min="1" max="50"
+                           style="width:100%; padding:10px; border-radius:4px; border:1px solid #7f8c8d; background:#fff; color:#333;">
+                </div>
+
+                <button type="button" onclick="mojeHladanie()" class="btn" style="margin-top:10px; background: #27ae60;">
+                    <i class="fa-solid fa-search"></i> Vyhľadať
+                </button>
+            </form>
+
         </aside>
 
         <main>

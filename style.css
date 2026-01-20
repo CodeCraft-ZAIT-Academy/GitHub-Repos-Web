@@ -1,7 +1,11 @@
 /* =========================================
    1. IMPORT PÍSMA A FARBY
    ========================================= */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+/* Importujeme DVA fonty: 
+   - 'Poppins' pre bežný text 
+   - 'Montserrat' pre nadpisy 
+*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap');
 
 :root {
     /* Svetlý režim (základné nastavenie) */
@@ -10,9 +14,15 @@
     --hlavicka-bg: #fff;
     --sidebar-bg: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
     --sidebar-text: #ecf0f1;
+    --sidebar-text-muted: #bdc3c7;
     --modra: #3498db;
+    --accent-color: #3498db;
     --karta-bg: #fff;
+    --text-card-title: #2c3e50;
+    --text-card-small: #7f8c8d;
     --okraj: #eee;
+    --border-color: #eee;
+    --shadow-color: rgba(0,0,0,0.1);
 }
 
 /* Tmavý režim (prepísanie farieb) */
@@ -23,7 +33,10 @@ body.dark-mode {
     --sidebar-bg: linear-gradient(180deg, #1a1a1a 0%, #2c2c2c 100%);
     --sidebar-text: #ccc;
     --karta-bg: #1e1e1e;
+    --text-card-title: #fff;
+    --text-card-small: #aaa;
     --okraj: #333;
+    --border-color: #333;
 }
 
 /* =========================================
@@ -36,6 +49,7 @@ body.dark-mode {
 }
 
 body {
+    /* 1. FONT: Poppins pre všetok bežný text */
     font-family: 'Poppins', sans-serif;
     background-color: var(--pozadie);
     color: var(--text);
@@ -43,6 +57,13 @@ body {
     flex-direction: column;
     min-height: 100vh;
     transition: background-color 0.3s, color 0.3s;
+}
+
+/* 2. FONT: Montserrat LEN pre nadpisy a Logo (aby to bolo vidno) */
+h1, h2, h3, h4, h5, h6, .logo a {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; /* Hrubšie písmo pre kontrast */
+    letter-spacing: -0.5px; /* Jemne stiahnuté pre moderný look */
 }
 
 a {
@@ -71,10 +92,10 @@ header {
 }
 
 .logo a {
-    font-size: 1.3rem;
-    font-weight: 700;
+    font-size: 1.4rem;
     color: var(--modra);
-    letter-spacing: 1px;
+    text-transform: uppercase;
+    /* Font aplikovaný vyššie v sekcii h1, h2... */
 }
 
 .menu a {
@@ -82,6 +103,7 @@ header {
     font-weight: 500;
     opacity: 0.7;
     transition: 0.3s;
+    font-family: 'Poppins', sans-serif; /* Menu ostane Poppins pre čitateľnosť */
 }
 
 .menu a:hover, .menu a.active {
@@ -122,12 +144,14 @@ main {
 }
 
 .sidebar h3 {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     color: #bdc3c7;
     margin-top: 25px;
     margin-bottom: 15px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
+    letter-spacing: 1px;
+    font-family: 'Montserrat', sans-serif; /* Aj malé nadpisy v sidebare */
 }
 
 .sidebar label {
@@ -154,6 +178,7 @@ main {
     border: 1px solid #7f8c8d;
     background: #fff;
     color: #333;
+    font-family: 'Poppins', sans-serif;
 }
 
 .btn {
@@ -166,6 +191,7 @@ main {
     cursor: pointer;
     font-weight: 600;
     margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .btn:hover {
@@ -225,6 +251,8 @@ main {
 .card h4 {
     margin-bottom: 10px;
     color: var(--text);
+    font-size: 1.1rem;
+    /* Nadpis karty bude Montserrat */
 }
 
 .card p {
@@ -232,12 +260,12 @@ main {
     color: #7f8c8d;
     line-height: 1.6;
     flex-grow: 1;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* =========================================
-   9. VYLEPŠENÝ KONTAKT (NOVÉ)
+   7. VYLEPŠENÝ KONTAKT
    ========================================= */
-
 .contact-header {
     text-align: center;
     margin-bottom: 50px;
@@ -254,15 +282,14 @@ main {
     font-size: 1.1rem;
 }
 
-/* Rozloženie: Vľavo info, vpravo formulár */
 .contact-wrapper {
     display: flex;
     gap: 50px;
     align-items: flex-start;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
-/* Ľavá strana (Info) */
 .contact-info {
     flex: 1;
     min-width: 300px;
@@ -279,10 +306,9 @@ main {
 }
 
 .info-item:hover {
-    background: rgba(0,0,0,0.03); /* Jemné podfarbenie pri myši */
+    background: rgba(0,0,0,0.03);
 }
 
-/* Krúžky pre ikony */
 .icon-box {
     width: 60px;
     height: 60px;
@@ -308,63 +334,17 @@ main {
     color: #7f8c8d;
 }
 
-/* Pravá strana (Formulár) */
-.contact-form {
-    flex: 1;
-    min-width: 300px;
-    background: var(--karta-bg);
-    padding: 40px;
-    border-radius: 20px;
-    border: 1px solid var(--okraj);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Pekný tieň */
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
+.info-item-link {
+    text-decoration: none;
     display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: var(--text);
+    transition: transform 0.2s;
 }
 
-.form-group input, 
-.form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #eee; /* Hrubší rámik */
-    border-radius: 8px;
-    background: var(--karta-bg); /* Aby to sedelo s dark mode */
-    color: var(--text);
-    transition: 0.3s;
-}
-
-.form-group input:focus, 
-.form-group textarea:focus {
-    border-color: var(--modra);
-    outline: none;
-}
-
-.btn-full {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.1rem;
-    margin-top: 10px;
-    border-radius: 8px;
-}
-
-/* Úprava pre mobil */
-@media (max-width: 768px) {
-    .contact-wrapper {
-        flex-direction: column;
-        gap: 30px;
-    }
-    .contact-form {
-        width: 100%;
-        padding: 20px;
-    }
+.info-item-link:hover .info-item {
+    background: rgba(52, 152, 219, 0.1);
+    transform: translateX(10px);
+    border-radius: 12px;
+    cursor: pointer;
 }
 
 /* =========================================
@@ -398,44 +378,106 @@ body.dark-mode #dark-mode-toggle {
     color: #333;
 }
 
-/* Mobilné zobrazenie */
-@media (max-width: 768px) {
-    .layout { flex-direction: column; height: auto; }
-    .sidebar { width: 100%; padding: 15px; }
-}
-/* --- ÚPRAVA PRE VIZITKU --- */
-.info-item-link {
-    text-decoration: none;
-    display: block;
-    transition: transform 0.2s;
+/* =========================================
+   9. TABUĽKA A POVINNÉ PRVKY
+   ========================================= */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    min-width: 500px;
 }
 
-.info-item-link:hover .info-item {
-    background: rgba(52, 152, 219, 0.1); /* Jemné modré podfarbenie pri myši */
-    transform: translateX(10px); /* Pekný posun doprava */
-    border-radius: 12px;
-    cursor: pointer;
+.info-table th, 
+.info-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+    color: var(--text);
 }
+
+.info-table th {
+    /* Nadpis tabuľky hrubším písmom */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+/* Povinné !important pre zadanie */
+.error-msg {
+    color: #e74c3c !important;
+    font-weight: bold;
+}
+
 /* =========================================
-   10. POKROČILÁ RESPONZIVITA (MOBIL & TABLET)
+   10. TLAČIDLÁ (INFO PAGE)
+   ========================================= */
+.links-section {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+}
+
+.links-section p {
+    margin-bottom: 20px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.buttons-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.links-section .btn {
+    width: auto;
+    padding: 12px 25px;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: white;
+    font-weight: 600;
+    border: 2px solid var(--accent-color);
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text);
+    border: 2px solid var(--text-card-small);
+}
+
+.btn-secondary:hover {
+    background-color: var(--text-card-small);
+    color: white;
+}
+
+/* =========================================
+   11. RESPONZIVITA (Na konci)
    ========================================= */
 
-/* Pre tablety a menšie notebooky (do 1024px) */
 @media (max-width: 1024px) {
     .container {
-        max-width: 95%; /* Využijeme viac miesta */
+        max-width: 95%;
     }
-    
     .grid {
-        /* Na tablete skúsime 2 stĺpce, ak sa zmestia */
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
 }
 
-/* Pre mobily (do 768px) */
 @media (max-width: 768px) {
-
-    /* --- 1. HLAVIČKA A MENU --- */
     header {
         height: auto;
         flex-direction: column;
@@ -456,50 +498,54 @@ body.dark-mode #dark-mode-toggle {
         margin: 0;
         padding: 8px 16px;
         background-color: #f0f2f5;
-        border-radius: 20px; /* Pilulkový tvar */
+        border-radius: 20px;
         font-size: 0.9rem;
         border: 1px solid transparent;
+        color: #333;
+    }
+
+    body.dark-mode .menu a {
+        background-color: #333;
+        color: #fff;
     }
 
     .menu a.active {
         background-color: rgba(52, 152, 219, 0.1);
         border-color: var(--modra);
+        color: var(--modra);
     }
 
-    /* --- 2. HLAVNÉ ROZLOŽENIE --- */
     .layout {
-        flex-direction: column; /* Sidebar hore, obsah dole */
-        height: auto; /* Zrušíme fixnú výšku */
+        flex-direction: column;
+        height: auto;
     }
 
     main {
         padding: 20px 15px;
-        overflow: visible; /* Na mobile chceme scrollovať celú stránku, nie len div */
+        overflow: visible;
     }
 
-    /* --- 3. BOČNÝ PANEL (SIDEBAR) --- */
     .sidebar {
         width: 100%;
         padding: 20px;
         border-bottom: 2px solid rgba(0,0,0,0.05);
-        background: var(--bg-body); /* Aby splynul s pozadím na vrchu */
+        background: var(--bg-body);
     }
 
     .sidebar h3 {
         margin-top: 0;
         font-size: 0.9rem;
-        color: var(--text); /* Tmavší text pre lepšiu čitateľnosť na mobile */
+        color: var(--text);
         border-bottom: none;
         margin-bottom: 10px;
     }
 
-    /* Urobíme filtre na search.html kompaktnejšie (vedľa seba) */
     .sidebar input, .sidebar select {
-        background: #fff;
-        border: 1px solid #ccc;
+        background: var(--karta-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text);
     }
 
-    /* Špeciálna úprava pre filtre na Domovskej stránke */
     .sidebar ul.filtre {
         display: flex;
         flex-wrap: wrap;
@@ -510,29 +556,26 @@ body.dark-mode #dark-mode-toggle {
         margin-bottom: 0;
     }
 
-    /* --- 4. KARTIČKY A GRID --- */
     .grid {
-        grid-template-columns: 1fr; /* Jedna karta na riadok */
+        grid-template-columns: 1fr;
         gap: 25px;
     }
 
     .card {
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Výraznejší tieň na mobile */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
 
-    /* --- 5. KONTAKTNÁ STRÁNKA --- */
     .contact-wrapper {
         flex-direction: column;
         gap: 30px;
     }
 
-    .contact-info, .contact-card, .info-item {
+    .contact-info, .info-item {
         width: 100%;
-        min-width: 100%;
     }
-    
+
     .info-item {
-        background: #fff;
+        background: var(--karta-bg);
         border-radius: 12px;
         padding: 15px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -542,13 +585,12 @@ body.dark-mode #dark-mode-toggle {
         font-size: 2rem;
     }
 
-    /* --- 6. TLAČIDLO DARK MODE --- */
     #dark-mode-toggle {
         bottom: 15px;
         right: 15px;
         width: 45px;
         height: 45px;
         font-size: 1rem;
-        opacity: 0.8; /* Aby nezavadzalo obsahu */
+        opacity: 0.8;
     }
 }

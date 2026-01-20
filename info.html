@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitRepos - Info</title>
+    <title>Info - GR Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -22,31 +22,85 @@
     </header>
 
     <div class="layout">
-        <main>
-            <div class="container" style="text-align: center; margin-top: 20px;">
-                <h1 style="color: var(--modra); margin-bottom: 10px;">O projekte GitRepos</h1>
-                <p>Váš prehľad najlepších open-source projektov.</p>
+        <main style="max-width: 1000px; margin: 0 auto; width: 100%; padding: 40px 20px;">
+            
+            <div style="text-align: center; margin-bottom: 50px;">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 20px;">
+                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 17H13V19H11V17ZM11 5H13V15H11V5Z" fill="#3498db"/>
+                </svg>
+                
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px; color: var(--text-main);">O projekte GitRepos</h1>
+                <p style="font-size: 1.1rem; color: var(--text-card-small); max-width: 600px; margin: 0 auto;">
+                    Toto je školský projekt pre CodeCraft 2025. Ukážka práce s API, tabuľkami a responzívnym dizajnom.
+                </p>
+            </div>
 
-                <div class="grid" style="margin-top: 40px;">
-                    <div class="card" style="text-align: center;">
-                        <i class="fa-solid fa-cloud" style="font-size: 2rem; color: var(--modra); margin-bottom: 15px;"></i>
-                        <h3>GitHub API</h3>
-                        <p>Dáta sťahujeme priamo zo serverov GitHubu v reálnom čase.</p>
-                    </div>
-
-                    <div class="card" style="text-align: center;">
-                        <i class="fa-solid fa-filter" style="font-size: 2rem; color: #e74c3c; margin-bottom: 15px;"></i>
-                        <h3>Filtrovanie</h3>
-                        <p>Inteligentný filter automaticky rozpozná jazyky v projektoch.</p>
-                    </div>
-
-                    <div class="card" style="text-align: center;">
-                        <i class="fa-solid fa-sort" style="font-size: 2rem; color: #2ecc71; margin-bottom: 15px;"></i>
-                        <h3>Triedenie</h3>
-                        <p>Zoraďte projekty podľa hviezd, aktivity (forky) alebo chýb.</p>
-                    </div>
+            <div class="grid" style="margin-bottom: 50px;">
+                <div class="card" style="text-align: center;">
+                    <i class="fa-solid fa-cloud" style="font-size: 2rem; color: var(--accent-color); margin-bottom: 15px;"></i>
+                    <h3>GitHub API</h3>
+                    <p>Dáta sťahujeme asynchrónne priamo zo serverov GitHubu.</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <i class="fa-solid fa-code" style="font-size: 2rem; color: #e74c3c; margin-bottom: 15px;"></i>
+                    <h3>HTML & CSS</h3>
+                    <p>Využitie Gridu, Flexboxu a Media Queries pre responzivitu.</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <i class="fa-solid fa-sort" style="font-size: 2rem; color: #2ecc71; margin-bottom: 15px;"></i>
+                    <h3>JavaScript</h3>
+                    <p>Dynamické generovanie obsahu a filtrovanie dát.</p>
                 </div>
             </div>
+
+            <div class="card" style="overflow-x: auto;">
+                <h3 style="margin-bottom: 20px;">Plán vývoja verzií</h3>
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Funkcia</th>
+                            <th>Verzia 1.0 (Teraz)</th>
+                            <th>Verzia 2.0 (Budúcnosť)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Vyhľadávanie</td>
+                            <td style="color: green;">✓ Funkčné</td>
+                            <td style="color: green;">✓ Vylepšené</td>
+                        </tr>
+                        <tr>
+                            <td>Tmavý režim</td>
+                            <td style="color: green;">✓ Funkčné</td>
+                            <td style="color: green;">✓ Automatický</td>
+                        </tr>
+                        <tr>
+                            <td>Prihlásenie užívateľa</td>
+                            <td style="color: red;">✕ Nie je</td>
+                            <td style="color: green;">✓ Plánované</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="links-section">
+                <p>Technická dokumentácia a zdroje:</p>
+                
+                <div class="buttons-row">
+                    
+                    <a href="https://github.com" target="_blank" class="btn btn-secondary">
+                        <i class="fa-brands fa-github"></i> GitHub.com
+                    </a>
+
+                    <a href="https://www.ifi.uzh.ch/dam/jcr:ff780599-d5e2-4d05-b923-1c333cbf2842/A%20Tutorial%20for%20GitHub.pdf" 
+                       target="_blank" 
+                       class="btn btn-primary">
+                        <i class="fa-solid fa-file-pdf"></i> PDF Dokument
+                    </a>
+
+                </div>
+            </div>
+
             <footer>© 2025 Matúš Beke</footer>
         </main>
     </div>
