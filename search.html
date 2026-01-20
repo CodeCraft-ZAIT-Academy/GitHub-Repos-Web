@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitRepos - Hľadanie</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="index.html">GITREPOS</a>
+        </div>
+        <nav class="menu">
+            <a href="index.html">Domov</a>
+            <a href="search.html" class="active">Hľadať</a>
+            <a href="info.html">Info</a>
+            <a href="contact.html">Kontakt</a>
+        </nav>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <h3>Filter Parametre</h3>
+            
+            <div>
+                <label>Kľúčové slovo</label>
+                <input type="text" id="hladany-nazov" placeholder="napr. Tetris...">
+            </div>
+
+            <div>
+                <label>Jazyk (nepovinné)</label>
+                <input type="text" id="hladany-jazyk" placeholder="napr. python...">
+            </div>
+
+            <div>
+                <label>Min. Hviezd (nepovinné)</label>
+                <input type="number" id="hladane-hviezdy" placeholder="napr. 1000">
+            </div>
+
+            <div style="margin-top: 15px;">
+                <label>Zoradiť výsledky</label>
+                <select id="hladane-zoradenie">
+                    <option value="stars">Najviac Hviezd ⭐</option>
+                    <option value="forks">Najviac Forkov 🍴</option>
+                    <option value="issues">Najviac Issues 🐛</option>
+                    <option value="updated">Najnovšie 📅</option>
+                </select>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <label>Koľko zobraziť?</label>
+                <input type="number" id="hladany-pocet" value="6" min="1" max="50">
+            </div>
+
+            <button onclick="mojeHladanie()" class="btn">
+                <i class="fa-solid fa-search"></i> Vyhľadať
+            </button>
+        </aside>
+
+        <main>
+            <div id="vysledky-hladania" class="grid">
+                <p style="text-align:center; margin-top:50px; color:#888;">
+                    Vyplňte parametre vľavo a nájdite svoj projekt.
+                </p>
+            </div>
+            <footer>© 2025 Matúš Beke</footer>
+        </main>
+    </div>
+
+    <button id="dark-mode-toggle">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

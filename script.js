@@ -1,262 +1,232 @@
 /* ============================================================
-   1. HLAVNÉ PREMENNÉ (Odkazy na veci v HTML)
+   1. HLAVNÉ NASTAVENIA
    ============================================================ */
-const API_URL = 'https://api.github.com/search/repositories?q=stars:>1000&sort=stars&order=desc&per_page=30';
 
-// Nájdeme miesto, kam sa budú kresliť kartičky (len na stránke Domov)
-const grid = document.getElementById('grid');
+// Adresa, odkiaľ sťahujeme dáta
+const API_BASE = 'https://api.github.com/search/repositories';
 
-// Miesto pre zoznam jazykov v ľavom menu
+// Odkazy na prvky v HTML (podľa ID)
+const mriezkaDomov = document.getElementById('grid');
 const zoznamJazykov = document.getElementById('lang-list');
+const mriezkaHladanie = document.getElementById('vysledky-hladania');
 
-// Premenná, kam si uložíme stiahnuté dáta z GitHubu
-let stiahnuteRepozitare = [];
+// Tlačidlo pre tmavý režim (funguje na oba názvy ID pre istotu)
+const tmaveTlacidlo = document.getElementById('mode-btn') || document.getElementById('dark-mode-toggle');
+
+// Sem si uložíme dáta pre domovskú stránku
+let dataDomov = [];
 
 
 /* ============================================================
-   2. SPÚŠŤANIE (Rozhodne sa, či sme na Domov alebo Info)
+   2. ČASŤ A: DOMOVSKÁ STRÁNKA (index.html)
    ============================================================ */
 
-// Ak sme na stránke "Domov" (existuje grid), stiahneme dáta
-if (grid) {
-    stiahniDataZGithubu();
+// Ak sme na domovskej stránke, spustíme automatické sťahovanie
+if (mriezkaDomov) {
+    spustiAutomatikuDomov();
 }
 
-// Ak sme na stránke Info alebo Kontakt, nič sa nesťahuje,
-// ale Dark Mode (tmavý režim) bude fungovať všade (je na konci súboru).
-
-
-/* ============================================================
-   3. FUNKCIA: Sťahovanie dát
-   ============================================================ */
-async function stiahniDataZGithubu() {
+async function spustiAutomatikuDomov() {
     try {
-        // Napíšeme užívateľovi, že pracujeme
-        grid.innerHTML = '<p style="text-align:center; color:#888; margin-top:50px;">Sťahujem dáta z GitHubu...</p>';
-
-        // Pridáme aktuálny čas, aby sme vždy dostali čerstvé dáta (nie staré z pamäte)
-        const adresa = `${API_URL}&t=${Date.now()}`;
-
-        // Pošleme požiadavku na GitHub
+        // Zobrazíme správu o načítavaní
+        mriezkaDomov.innerHTML = '<p style="text-align:center; margin-top:50px">Načítavam TOP repozitáre...</p>';
+        
+        // Stiahneme 30 najlepších repozitárov podľa hviezd
+        const adresa = `${API_BASE}?q=stars:>1000&sort=stars&order=desc&per_page=30&t=${Date.now()}`;
+        
         const odpoved = await fetch(adresa);
-        const data = await odpoved.json();
+        const json = await odpoved.json();
+        dataDomov = json.items || [];
 
-        // Uložíme si výsledok do našej premennej
-        stiahnuteRepozitare = data.items;
-
-        // Skontrolujeme, či niečo prišlo
-        if (stiahnuteRepozitare.length === 0) {
-            grid.innerHTML = '<p>Nenašli sa žiadne repozitáre.</p>';
-            return;
+        // Ak máme dáta, vykreslíme menu a kartičky
+        if (dataDomov.length > 0) {
+            vytvorMenuJazykovDomov();
+            vykresliKartyDomov();
+        } else {
+            mriezkaDomov.innerHTML = '<p>Nič sa nenašlo.</p>';
         }
-
-        // Ak je všetko OK:
-        // 1. Vyrobíme menu s jazykmi vľavo
-        vykresliBocneMenu();
-        // 2. Vyrobíme kartičky v strede
-        vykresliKarticky();
 
     } catch (chyba) {
         console.error(chyba);
-        grid.innerHTML = '<p style="text-align:center; color:red">Nastala chyba pri spojení s GitHubom.</p>';
+        mriezkaDomov.innerHTML = '<p style="color:red; text-align:center">Nepodarilo sa stiahnuť dáta.</p>';
     }
 }
 
+// Funkcia na kreslenie kariet (Domov)
+function vykresliKartyDomov() {
+    if (!mriezkaDomov) return;
 
-/* ============================================================
-   4. FUNKCIA: Kreslenie bočného menu (Jazyky)
-   ============================================================ */
-function vykresliBocneMenu() {
-    // Ak na tejto stránke nie je bočné menu, končíme (napr. stránka Kontakt)
+    // Získame nastavenia filtrov
+    const chceVsetky = document.getElementById('check-all') ? document.getElementById('check-all').checked : true;
+    const vybraneJazyky = Array.from(document.querySelectorAll('.jazyk-checkbox:checked')).map(cb => cb.value);
+    const sortElement = document.querySelector('input[name="sort"]:checked');
+    const typTriedenia = sortElement ? sortElement.value : 'stars';
+
+    // 1. Filtrujeme zoznam
+    let zoznam = dataDomov.filter(repo => {
+        if (chceVsetky) return true;
+        if (repo.language && vybraneJazyky.includes(repo.language)) return true;
+        return false;
+    });
+
+    // 2. Triedime zoznam
+    zoznam.sort((a, b) => {
+        if (typTriedenia === 'stars') return b.stargazers_count - a.stargazers_count;
+        if (typTriedenia === 'forks') return b.forks_count - a.forks_count;
+        return b.open_issues_count - a.open_issues_count;
+    });
+
+    // 3. Vykreslíme
+    generujHTML(mriezkaDomov, zoznam);
+}
+
+// Funkcia na vytvorenie bočného menu (Jazyky)
+function vytvorMenuJazykovDomov() {
     if (!zoznamJazykov) return;
 
-    // Zistíme, aké jazyky sa v repozitároch nachádzajú (aby sme tam nemali blbosti)
-    const vsetkyJazyky = stiahnuteRepozitare.map(repo => repo.language).filter(jazyk => jazyk !== null);
-    // Odstránime duplikáty (aby tam JavaScript nebol 10x) a zoradíme podľa abecedy
-    const unikatneJazyky = [...new Set(vsetkyJazyky)].sort();
-
-    // Začneme vyrábať HTML - prvé tlačidlo je "Všetky"
-    let htmlKod = `
-        <li>
-            <label>
-                <input type="checkbox" id="check-all" checked onchange="klikolNaVsetky()">
-                <div class="custom-box is-square"></div>
-                <span>Všetky</span>
-            </label>
-        </li>
-    `;
-
-    // Pre každý nájdený jazyk vyrobíme ďalšie tlačidlo
-    unikatneJazyky.forEach(jazyk => {
-        htmlKod += `
-            <li>
-                <label>
-                    <input type="checkbox" class="jazyk-checkbox" value="${jazyk}" onchange="klikolNaJazyk()">
-                    <div class="custom-box is-square"></div>
-                    <span>${jazyk}</span>
-                </label>
-            </li>
-        `;
-    });
-
-    // Vložíme vyrobený kód do stránky
-    zoznamJazykov.innerHTML = htmlKod;
-}
-
-
-/* ============================================================
-   5. REAKCIE NA KLIKNUTIA (Filtrovanie)
-   ============================================================ */
-
-// Keď klikneš na "Všetky"
-function klikolNaVsetky() {
-    const vsetkyInput = document.getElementById('check-all');
-    const ostatneInputy = document.querySelectorAll('.jazyk-checkbox');
-
-    if (vsetkyInput.checked) {
-        // Odškrtni ostatné jazyky
-        ostatneInputy.forEach(checkbox => checkbox.checked = false);
-    }
-    vykresliKarticky(); // Prekresli stred
-}
-
-// Keď klikneš na konkrétny jazyk (napr. Python)
-function klikolNaJazyk() {
-    const vsetkyInput = document.getElementById('check-all');
-    const zaskrtnuteJazyky = document.querySelectorAll('.jazyk-checkbox:checked');
-
-    // Ak si vybral nejaký jazyk, zruš fajku pri "Všetky"
-    if (zaskrtnuteJazyky.length > 0) {
-        vsetkyInput.checked = false;
-    } else {
-        // Ak si všetko odškrtol, automaticky zapni "Všetky"
-        vsetkyInput.checked = true;
-    }
-    vykresliKarticky(); // Prekresli stred
-}
-
-// Keď klikneš na Zoradiť (Hviezdy / Forky / Issues)
-// Nájde všetky prepínače s menom "sort" a povie im, aby pri zmene prekreslili karty
-document.querySelectorAll('input[name="sort"]').forEach(radio => {
-    radio.addEventListener('change', vykresliKarticky);
-});
-
-
-/* ============================================================
-   6. FUNKCIA: Kreslenie kartičiek (To hlavné)
-   ============================================================ */
-function vykresliKarticky() {
-    // Ak nie sme na domovskej stránke, nerob nič
-    if (!grid) return;
-
-    // 1. Zistíme, čo chce užívateľ vidieť (Filtrovanie)
-    const chceVsetky = document.getElementById('check-all').checked;
+    // Získame unikátne jazyky
+    let jazyky = [...new Set(dataDomov.map(r => r.language).filter(l => l))].sort();
     
-    // Zozbierame názvy zaškrtnutých jazykov (napr. ["Python", "Java"])
-    const vybraneJazyky = Array.from(document.querySelectorAll('.jazyk-checkbox:checked'))
-                               .map(checkbox => checkbox.value.toLowerCase());
-
-    // Vyfiltrujeme zoznam
-    let zoznamNaZobrazenie = stiahnuteRepozitare.filter(repo => {
-        if (chceVsetky) return true; // Ak chce všetky, berieme všetko
-        if (!repo.language) return false; // Ak repo nemá jazyk, ignorujeme
-        return vybraneJazyky.includes(repo.language.toLowerCase()); // Má repo jazyk, ktorý sme vybrali?
+    // Pridáme možnosť "Všetky"
+    let html = `<li><label><input type="checkbox" id="check-all" checked onchange="klikolNaVsetky()"><div class="custom-box is-square"></div><span>Všetky</span></label></li>`;
+    
+    // Pridáme ostatné jazyky
+    jazyky.forEach(j => {
+        html += `<li><label><input type="checkbox" class="jazyk-checkbox" value="${j}" onchange="klikolNaJazyk()"><div class="custom-box is-square"></div><span>${j}</span></label></li>`;
     });
+    
+    zoznamJazykov.innerHTML = html;
+    
+    // Zapneme sledovanie zmeny pri sortovaní
+    document.querySelectorAll('input[name="sort"]').forEach(el => el.onchange = vykresliKartyDomov);
+}
 
-    // 2. Zoradíme zoznam (Sortovanie)
-    // Zistíme, ktorý krúžok je vybratý (stars, forks, issues)
-    const vybraneZoradenie = document.querySelector('input[name="sort"]:checked').value;
+// Pomocné funkcie pre klikanie na checkboxy
+function klikolNaVsetky() {
+    const checkAll = document.getElementById('check-all');
+    if(checkAll && checkAll.checked) document.querySelectorAll('.jazyk-checkbox').forEach(cb => cb.checked = false);
+    vykresliKartyDomov();
+}
+function klikolNaJazyk() {
+    const checkAll = document.getElementById('check-all');
+    if (checkAll) checkAll.checked = document.querySelectorAll('.jazyk-checkbox:checked').length === 0;
+    vykresliKartyDomov();
+}
 
-    zoznamNaZobrazenie.sort((a, b) => {
-        if (vybraneZoradenie === 'stars') {
-            return b.stargazers_count - a.stargazers_count; // Od najviac hviezd
-        } else if (vybraneZoradenie === 'forks') {
-            return b.forks_count - a.forks_count;           // Od najviac forkov
-        } else if (vybraneZoradenie === 'issues') {
-            return b.open_issues_count - a.open_issues_count; // Od najviac issues
-        }
-        return 0; // Inak nemeň poradie
-    });
 
-    // 3. Vykreslíme HTML do stránky
-    grid.innerHTML = ''; // Vyčistíme staré karty
+/* ============================================================
+   3. ČASŤ B: VYHĽADÁVACIA STRÁNKA (search.html)
+   ============================================================ */
 
-    if (zoznamNaZobrazenie.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; margin-top:20px;">Pre tento výber sa nič nenašlo.</p>';
+async function mojeHladanie() {
+    // 1. Získame hodnoty z formulára
+    let nazov = document.getElementById('hladany-nazov').value.trim();
+    let jazyk = document.getElementById('hladany-jazyk').value.trim();
+    let minHviezdy = document.getElementById('hladane-hviezdy').value;
+    let pocet = document.getElementById('hladany-pocet').value;
+    let zoradenie = document.getElementById('hladane-zoradenie').value;
+
+    // Musíme skontrolovať, či je zadaný názov
+    if (!nazov) {
+        alert("Prosím, zadajte aspoň názov (kľúčové slovo).");
         return;
     }
 
-    zoznamNaZobrazenie.forEach(repo => {
-        // Formátovanie čísel (1500 -> 1.5k)
-        const hviezdy = repo.stargazers_count > 1000 ? (repo.stargazers_count/1000).toFixed(1)+'k' : repo.stargazers_count;
-        const forky = repo.forks_count > 1000 ? (repo.forks_count/1000).toFixed(1)+'k' : repo.forks_count;
-        const datum = new Date(repo.updated_at).toLocaleDateString('sk-SK');
+    // 2. Poskladáme URL adresu pre API
+    let dotaz = `q=${nazov}`;
+    
+    if (jazyk) {
+        dotaz += `+language:${jazyk}`;
+    }
+    if (minHviezdy) {
+        dotaz += `+stars:>${minHviezdy}`;
+    }
 
-        // Farbičky pre bodku pri jazyku
+    // GitHub nevie triediť podľa issues, takže ak to chceme, musíme to spraviť ručne
+    let apiSort = zoradenie;
+    if (zoradenie === 'issues') apiSort = 'stars'; 
+
+    let adresa = `${API_BASE}?${dotaz}&sort=${apiSort}&order=desc&per_page=100`;
+
+    // 3. Stiahnutie a spracovanie
+    try {
+        if(mriezkaHladanie) mriezkaHladanie.innerHTML = '<p style="text-align:center; margin-top:50px">Hľadám...</p>';
+
+        const odpoved = await fetch(adresa);
+        const json = await odpoved.json();
+        let data = json.items || [];
+
+        // Ručné triedenie pre Issues
+        if (zoradenie === 'issues') {
+            data.sort((a, b) => b.open_issues_count - a.open_issues_count);
+        }
+
+        // Orežeme zoznam na požadovaný počet
+        let finalnyZoznam = data.slice(0, pocet);
+
+        if (mriezkaHladanie) {
+            if (finalnyZoznam.length === 0) {
+                mriezkaHladanie.innerHTML = '<p style="text-align:center">Pre tieto kritériá sa nič nenašlo.</p>';
+            } else {
+                generujHTML(mriezkaHladanie, finalnyZoznam);
+            }
+        }
+
+    } catch (chyba) {
+        console.error(chyba);
+        if(mriezkaHladanie) mriezkaHladanie.innerHTML = '<p style="color:red; text-align:center">Chyba API.</p>';
+    }
+}
+
+
+/* ============================================================
+   4. SPOLOČNÉ FUNKCIE (HTML Generátor + Dark Mode)
+   ============================================================ */
+
+function generujHTML(element, zoznamDat) {
+    let html = '';
+    zoznamDat.forEach(repo => {
+        // Úprava čísel (napr. 1500 -> 1.5k)
+        let hviezdy = (repo.stargazers_count / 1000).toFixed(1) + 'k';
+        let popis = repo.description ? repo.description.slice(0, 80) + '...' : 'Bez popisu';
+        let jazyk = repo.language || 'Neznámy';
+        
+        // Farby pre bodku pri jazyku
         const farby = { javascript:'#f1e05a', python:'#3572A5', java:'#b07219', html:'#e34c26', css:'#563d7c' };
-        // Ak nemáme farbu, použijeme šedú (#ccc)
-        const farbaBodky = farby[repo.language?.toLowerCase()] || '#ccc';
+        const farbaBodky = farby[jazyk.toLowerCase()] || '#ccc';
 
-        // Vložíme HTML kartičky
-        grid.innerHTML += `
+        html += `
             <div class="card" style="animation: fadeIn 0.4s ease forwards">
-                <h4>
-                    <a href="${repo.html_url}" target="_blank" style="color:inherit; text-decoration:none">
-                        ${repo.name}
-                    </a>
-                </h4>
-                <p>${repo.description ? repo.description.substring(0, 80)+'...' : 'Bez popisu'}</p>
-                
+                <h4><a href="${repo.html_url}" target="_blank" style="color:inherit; text-decoration:none">${repo.name}</a></h4>
+                <p>${popis}</p>
                 <div style="margin-top:15px; font-size:0.85rem; color:#666; display:flex; flex-direction:column; gap:5px;">
-                    
                     <div style="display:flex; justify-content:space-between;">
-                        <span>
-                            <i class="fa-solid fa-circle" style="color:${farbaBodky}; font-size:8px"></i> 
-                            <b>${repo.language || 'Neznámy'}</b>
-                        </span>
+                        <span><i class="fa-solid fa-circle" style="color:${farbaBodky}; font-size:8px"></i> <b>${jazyk}</b></span>
                         <span><i class="fa-regular fa-star"></i> ${hviezdy}</span>
                     </div>
-                    
                     <div style="display:flex; justify-content:space-between; opacity:0.8; border-top:1px solid #eee; padding-top:5px; margin-top:5px;">
-                        <span title="Počet ľudí (Forky)">
-                            <i class="fa-solid fa-code-branch"></i> ${forky}
-                        </span>
-                        <span title="Issues">
-                            🐛 ${repo.open_issues_count}
-                        </span>
+                        <span title="Forky"><i class="fa-solid fa-code-branch"></i> ${repo.forks_count}</span>
+                        <span title="Issues">🐛 ${repo.open_issues_count}</span>
                     </div>
-
                 </div>
             </div>
         `;
     });
+    element.innerHTML = html;
 }
 
+// Dark Mode logika
+if (localStorage.getItem('tema') === 'dark') {
+    document.body.classList.add('dark-mode');
+    if (tmaveTlacidlo) tmaveTlacidlo.innerHTML = '<i class="fa-solid fa-sun"></i>';
+}
 
-/* ============================================================
-   7. DARK MODE (Tmavý režim)
-   ============================================================ */
-const tlacidloMode = document.getElementById('dark-mode-toggle');
-
-// Ak tlačidlo na stránke existuje (malo by byť všade)
-if (tlacidloMode) {
-    // Pozrieme sa do pamäte prehliadača, či si užívateľ minule zapol tmavý režim
-    if (localStorage.getItem('tema') === 'dark') {
-        document.body.classList.add('dark-mode');
-        tlacidloMode.innerHTML = '<i class="fa-solid fa-sun"></i>';
-    }
-
-    // Keď klikneš na tlačidlo
-    tlacidloMode.onclick = () => {
+if (tmaveTlacidlo) {
+    tmaveTlacidlo.onclick = () => {
         document.body.classList.toggle('dark-mode');
-        
-        // Zistíme, či je teraz zapnutý tmavý režim
         const jeTmave = document.body.classList.contains('dark-mode');
         
-        // Uložíme to do pamäte ('dark' alebo 'light')
         localStorage.setItem('tema', jeTmave ? 'dark' : 'light');
-        
-        // Zmeníme ikonku (Slnko alebo Mesiac)
-        tlacidloMode.innerHTML = jeTmave ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+        tmaveTlacidlo.innerHTML = jeTmave ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     };
 }
