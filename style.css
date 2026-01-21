@@ -1,22 +1,30 @@
-/* =========================================
-   1. IMPORT PÍSMA A FARBY
-   ========================================= */
-/* Importujeme DVA fonty: 
-   - 'Poppins' pre bežný text 
-   - 'Montserrat' pre nadpisy 
-*/
+/* ==================================================
+   PROJEKT: GitRepos Dashboard
+   AUTOR: Matúš Beke
+   POPIS: Hlavný štýl pre celú webstránku
+   ================================================== */
+
+/* 1. IMPORT PÍSIEM (Google Fonts) */
+/* Používame 'Montserrat' pre nadpisy (aby boli tučné) a 'Poppins' pre text */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap');
 
+/* 2. PREMENNÉ (Farby a nastavenia) */
 :root {
-    /* Svetlý režim (základné nastavenie) */
+    /* Svetlý režim (Light Mode) */
     --pozadie: #f4f7f6;
     --text: #333;
     --hlavicka-bg: #fff;
+    
+    /* Farby pre bočný panel */
     --sidebar-bg: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
     --sidebar-text: #ecf0f1;
     --sidebar-text-muted: #bdc3c7;
+    
+    /* Hlavná farba (Modrá) */
     --modra: #3498db;
     --accent-color: #3498db;
+    
+    /* Kartičky a orámovanie */
     --karta-bg: #fff;
     --text-card-title: #2c3e50;
     --text-card-small: #7f8c8d;
@@ -25,7 +33,7 @@
     --shadow-color: rgba(0,0,0,0.1);
 }
 
-/* Tmavý režim (prepísanie farieb) */
+/* Tmavý režim (Dark Mode) - prepíše farby */
 body.dark-mode {
     --pozadie: #121212;
     --text: #e0e0e0;
@@ -39,54 +47,49 @@ body.dark-mode {
     --border-color: #333;
 }
 
-/* =========================================
-   2. ZÁKLADNÝ ŠTÝL STRÁNKY
-   ========================================= */
+/* 3. ZÁKLADNÉ NASTAVENIA (Reset) */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Aby padding nezväčšoval elementy */
 }
 
 body {
-    /* 1. FONT: Poppins pre všetok bežný text */
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif; /* Základný font */
     background-color: var(--pozadie);
     color: var(--text);
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    transition: background-color 0.3s, color 0.3s;
+    min-height: 100vh; /* Aby bola pätička dole */
+    transition: background-color 0.3s, color 0.3s; /* Plynulá zmena farieb */
 }
 
-/* 2. FONT: Montserrat LEN pre nadpisy a Logo (aby to bolo vidno) */
+/* Nadpisy majú iný font */
 h1, h2, h3, h4, h5, h6, .logo a {
     font-family: 'Montserrat', sans-serif;
-    font-weight: 700; /* Hrubšie písmo pre kontrast */
-    letter-spacing: -0.5px; /* Jemne stiahnuté pre moderný look */
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 a {
-    text-decoration: none;
+    text-decoration: none; /* Zrušíme podčiarknutie odkazov */
     color: inherit;
 }
 
 ul {
-    list-style: none;
+    list-style: none; /* Zrušíme bodky pri zoznamoch */
 }
 
-/* =========================================
-   3. VRCHNÉ MENU (HEADER)
-   ========================================= */
+/* 4. HLAVIČKA (Header) */
 header {
     background-color: var(--hlavicka-bg);
     height: 60px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* Logo vľavo, menu vpravo */
     padding: 0 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: sticky;
+    position: sticky; /* Aby ostala prilepená hore */
     top: 0;
     z-index: 100;
 }
@@ -95,7 +98,6 @@ header {
     font-size: 1.4rem;
     color: var(--modra);
     text-transform: uppercase;
-    /* Font aplikovaný vyššie v sekcii h1, h2... */
 }
 
 .menu a {
@@ -103,7 +105,7 @@ header {
     font-weight: 500;
     opacity: 0.7;
     transition: 0.3s;
-    font-family: 'Poppins', sans-serif; /* Menu ostane Poppins pre čitateľnosť */
+    font-family: 'Poppins', sans-serif;
 }
 
 .menu a:hover, .menu a.active {
@@ -111,29 +113,25 @@ header {
     color: var(--modra);
 }
 
-/* =========================================
-   4. ROZLOŽENIE (LAYOUT)
-   ========================================= */
+/* 5. ROZLOŽENIE STRÁNKY (Layout) */
 .layout {
     display: flex;
     flex: 1;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 60px); /* Výška okna mínus hlavička */
 }
 
 main {
     flex: 1;
     padding: 30px;
-    overflow-y: auto;
+    overflow-y: auto; /* Scrollovanie obsahu */
 }
 
 .container {
     max-width: 900px;
-    margin: 0 auto;
+    margin: 0 auto; /* Centrovanie na stred */
 }
 
-/* =========================================
-   5. BOČNÝ PANEL (SIDEBAR)
-   ========================================= */
+/* 6. BOČNÝ PANEL (Sidebar) */
 .sidebar {
     width: 280px;
     background: var(--sidebar-bg);
@@ -151,7 +149,7 @@ main {
     margin-bottom: 15px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
     letter-spacing: 1px;
-    font-family: 'Montserrat', sans-serif; /* Aj malé nadpisy v sidebare */
+    font-family: 'Montserrat', sans-serif;
 }
 
 .sidebar label {
@@ -167,7 +165,7 @@ main {
     color: white;
 }
 
-/* Štýl inputov v sidebare */
+/* Inputy v bočnom paneli */
 .sidebar input[type="text"], 
 .sidebar input[type="number"],
 .sidebar select {
@@ -181,6 +179,7 @@ main {
     font-family: 'Poppins', sans-serif;
 }
 
+/* Tlačidlo v sidebare */
 .btn {
     width: 100%;
     padding: 10px;
@@ -198,10 +197,10 @@ main {
     opacity: 0.9;
 }
 
-/* Vlastný dizajn checkboxov */
+/* Vlastný dizajn checkboxov (štvorčeky a krúžky) */
 .sidebar input[type="checkbox"], 
 .sidebar input[type="radio"] { 
-    display: none; 
+    display: none; /* Skryjeme pôvodný checkbox */
 }
 
 .custom-box {
@@ -215,6 +214,7 @@ main {
     justify-content: center;
 }
 
+/* Keď je checkbox zaškrtnutý */
 .sidebar input:checked + .custom-box {
     background-color: var(--modra);
     border-color: var(--modra);
@@ -223,11 +223,10 @@ main {
 .is-round { border-radius: 50%; }
 .is-square { border-radius: 4px; }
 
-/* =========================================
-   6. KARTIČKY A GRID
-   ========================================= */
+/* 7. KARTIČKY A GRID (Mriežka) */
 .grid {
     display: grid;
+    /* Automatické stĺpce, minimálne 280px široké */
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
 }
@@ -244,7 +243,7 @@ main {
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Efekt zdvihnutia */
     border-color: var(--modra);
 }
 
@@ -252,7 +251,6 @@ main {
     margin-bottom: 10px;
     color: var(--text);
     font-size: 1.1rem;
-    /* Nadpis karty bude Montserrat */
 }
 
 .card p {
@@ -263,9 +261,7 @@ main {
     font-family: 'Poppins', sans-serif;
 }
 
-/* =========================================
-   7. VYLEPŠENÝ KONTAKT
-   ========================================= */
+/* 8. KONTAKTNÁ SEKCIA */
 .contact-header {
     text-align: center;
     margin-bottom: 50px;
@@ -309,6 +305,7 @@ main {
     background: rgba(0,0,0,0.03);
 }
 
+/* Ikony v krúžku */
 .icon-box {
     width: 60px;
     height: 60px;
@@ -320,6 +317,7 @@ main {
     color: white;
 }
 
+/* Farby pre ikony */
 .blue { background: #3498db; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); }
 .green { background: #2ecc71; box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3); }
 .red { background: #e74c3c; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); }
@@ -347,9 +345,7 @@ main {
     cursor: pointer;
 }
 
-/* =========================================
-   8. PÄTIČKA A OSTATNÉ
-   ========================================= */
+/* 9. PÄTIČKA (Footer) */
 footer {
     text-align: center;
     margin-top: 40px;
@@ -357,6 +353,7 @@ footer {
     font-size: 0.85rem;
 }
 
+/* Tlačidlo pre Tmavý režim */
 #dark-mode-toggle {
     position: fixed;
     bottom: 20px;
@@ -378,9 +375,7 @@ body.dark-mode #dark-mode-toggle {
     color: #333;
 }
 
-/* =========================================
-   9. TABUĽKA A POVINNÉ PRVKY
-   ========================================= */
+/* 10. TABUĽKA A ODKAZY (Info stránka) */
 .info-table {
     width: 100%;
     border-collapse: collapse;
@@ -397,20 +392,17 @@ body.dark-mode #dark-mode-toggle {
 }
 
 .info-table th {
-    /* Nadpis tabuľky hrubším písmom */
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
 }
 
-/* Povinné !important pre zadanie */
+/* Toto musím mať pre splnenie zadania (!important) */
 .error-msg {
     color: #e74c3c !important;
     font-weight: bold;
 }
 
-/* =========================================
-   10. TLAČIDLÁ (INFO PAGE)
-   ========================================= */
+/* Tlačidlá na stiahnutie */
 .links-section {
     text-align: center;
     margin-top: 50px;
@@ -441,6 +433,7 @@ body.dark-mode #dark-mode-toggle {
     margin: 0;
 }
 
+/* Modré tlačidlo */
 .btn-primary {
     background-color: var(--accent-color);
     color: white;
@@ -453,6 +446,7 @@ body.dark-mode #dark-mode-toggle {
     transform: translateY(-2px);
 }
 
+/* Priehľadné tlačidlo */
 .btn-secondary {
     background-color: transparent;
     color: var(--text);
@@ -464,9 +458,8 @@ body.dark-mode #dark-mode-toggle {
     color: white;
 }
 
-/* =========================================
-   11. RESPONZIVITA (Na konci)
-   ========================================= */
+/* 11. RESPONZIVITA (Mobil a Tablet) */
+/* Toto sa spustí len na menších obrazovkách */
 
 @media (max-width: 1024px) {
     .container {
